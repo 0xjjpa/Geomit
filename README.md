@@ -7,7 +7,7 @@ A chrome app that attaches your location in your next git commit. Through [Git H
 Your location and of any of your contributors who uses Geomit will be attached in a `contributors.geojson` file in the base of your repository, allowing you to import the rendered map to any webpage through Github's map system.
 
 E.g.
-![map](https://render.github.com/view/geojson?url=https://raw.github.com/benbalter/dc-wifi-social/master/bars.geojson)
+<iframe class="render-viewer" src="https://render.github.com/view/geojson/?url=https%3A%2F%2Fraw.github.com%2Fbenbalter%2Fdc-wifi-social%2Fmaster%2Fbars.geojson" sandbox="allow-scripts allow-same-origin">Viewer requires iframe.</iframe>
 
 ## Why?
 
