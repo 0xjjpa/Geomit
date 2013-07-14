@@ -1,3 +1,5 @@
+![cover](https://raw.github.com/jjperezaguinaga/Geomit/master/assets/cover.png)
+
 Geomit
 ======
 
