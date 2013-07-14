@@ -4,7 +4,7 @@
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "Attaches your location to your next commit",
+    "message": "Attaches your location every commit to a contributors.geojson file",
     "description": "The description of the application"
   }
 }
