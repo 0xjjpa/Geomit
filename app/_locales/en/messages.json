@@ -4,7 +4,7 @@
     "description": "The name of the application"
   },
   "appDescription": {
-    "message": "A wrapper to retrieve a user geolocation",
+    "message": "Attaches your location to your next commit",
     "description": "The description of the application"
   }
 }
