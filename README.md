@@ -33,6 +33,10 @@ Geomit opens a TCP port through Google Chrome and the Networks Communication API
 
 3. Continue working as you would normally, ignoring Geomit. Every time you perform a commit, Geomit will retrieve your location, see if there's a `contributors.geojson` file already and add yours, or create a new one if there's none.
 
+## Security
+
+Anyone (or anything) listening to Geomit's TCP port can retrieve the communication between Geomit and the Pre-commit hook, thus, obtaining your location. Although a security protocol was considered in order to hinder this problem, your shouldn't be sharing your location in a Github repository to begin with if security it's a main concern for you.  
+
 ## Limitations
 
 Geomit requires the usage of Ruby for connecting to TCP as part of a Pre-commit hook. Future releases might include other languages version.

@@ -1,1 +1,28 @@
-/* Will be compiled down to a single stylesheet with your sass files */
+@font-face {
+  font-family: 'Armata';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Armata'), local('Armata-Regular'), url(../fonts/Armata.woff) format('woff');
+}
+
+html {
+  font-family: 'Armata', sans-serif;
+}
+
+
+/* ====== Media Object ====== */
+.media {margin:10px;}
+.media, .bd {overflow:hidden; _overflow:visible; zoom:1;}
+.media .img {float:left; margin-right: 10px;}
+.media .img img{display:block;}
+.media .imgExt{float:right; margin-left: 10px;}
+
+h1 small{
+  font-size: .6em;
+  color: #999;
+}
+
+#serverlog {
+  height: 60px;
+  overflow-y: scroll;
+}

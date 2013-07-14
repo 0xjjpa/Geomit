@@ -12,14 +12,11 @@ var log = (function(){
   return {output: output};
 })();
 
-
 chrome.runtime.getBackgroundPage(function(bgPage) {
 
  bgPage.log.addListener(function(str) {
     log.output(str);
   });
-
- console.log(bgPage);
 
  bgPage.TcpServer.getNetworkAddresses(function(list) {
     var addr=document.querySelector("#addresses");
@@ -33,26 +30,13 @@ chrome.runtime.getBackgroundPage(function(bgPage) {
     };
   });
 
-  function setConnectedState(addr, port) {
-    document.querySelector(".serving-at").innerText=addr+":"+port;
-    document.querySelector("#server").className="connected";
-  }
-
-  document.getElementById('serverStart').addEventListener('click', function() {
-    var addr=document.getElementById("addresses").value;
-    var port=parseInt(document.getElementById("serverPort").value);
-    setConnectedState(addr, port);
-    bgPage.startServer(addr, port);
-  });
-
-  document.getElementById('serverStop').addEventListener('click', function() {
-    document.querySelector("#server").className="";
-    bgPage.stopServer();
-  })
+  // Stop the server = bgPage.stopServer();
 
   var currentState=bgPage.getServerState();
   if (currentState.isConnected) {
     setConnectedState(currentState.addr, currentState.port);
   }
 
-})
+  bgPage.startServer("127.0.0.1", 8888);
+
+});

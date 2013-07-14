@@ -13,5 +13,8 @@
       "scripts": ["tcp-server.js", "main.js"]
     }
   },
-  "permissions": [{"socket":["tcp-listen"]}, "webview", "geolocation"]
+  "permissions": [
+    {"socket":["tcp-listen"]},
+    "geolocation"
+  ]
 }

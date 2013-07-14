@@ -1,29 +1,29 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Geomit</title>
-    <!-- build:css styles/app.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+  <meta charset="utf-8">
+  <title>Geomit</title>
+  <!-- build:css styles/app.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
 </head>
 <body>
   <section id="server">
-      <h1>Chrome Remote Commando</h1>
-      <div class="hide-when-connected">Serve at 
-        <select id="addresses"><option>127.0.0.1</option></select>:
-        <input type="number" id="serverPort" value="8888"></input>
-        <button id="serverStart">Start!</button>
-    </div>
-    <div class="hide-when-not-connected">
-        <p>Serving at <span class="serving-at"></span>
-          <button id="serverStop">Stop!</button></p>
-          <div id="serverlog"></div>
-      </div>
-  </section>
-  <webview style="height:420px; width:620px" src='https://render.github.com/view/geojson?url=https://raw.github.com/benbalter/dc-wifi-social/master/bars.geojson'></webview>
-  <script src="server.js"></script>
-  <script src="location.js"></script>
+    
+    <div class="media attribution">
 
-</body>
-</html>
+      <a href="#" class="img">
+        <img src="icon-128.png" alt="me" />
+      </a>
+      <div class="bd">
+        <h1>Geomit <small>Listening to address 127.0.0.1 and port 8888</small></h1>
+        <div id="serverlog"></div>
+      </div>
+    </div>
+
+    </section>
+    <script src="server.js"></script>
+    <script src="location.js"></script>
+
+  </body>
+  </html>
