@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Geomit",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "A wrapper to retrieve a user geolocation",
+    "description": "The description of the application"
+  }
+}
