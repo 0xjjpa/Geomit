@@ -1,6 +1,7 @@
 
 var tcpServer;
 var commandWindow;
+var log;
 
 /**
  * Listens for the app launching then creates the window
@@ -13,7 +14,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
     commandWindow.focus();
   } else {
     chrome.app.window.create('index.html',
-      {bounds: {width: 650, height: 180, left: 0}},
+      {bounds: {width: 750, height: 180, left: 0}},
       function(w) {
         commandWindow = w;
       });
@@ -21,54 +22,36 @@ chrome.app.runtime.onLaunched.addListener(function() {
 });
 
 
-// event logger
-var log = (function(){
-  var logLines = [];
-  var logListener = null;
-
-  var output=function(str) {
-    if (str.length>0 && str.charAt(str.length-1)!='\n') {
-      str+='\n'
-    }
-    logLines.push(str);
-    if (logListener) {
-      logListener(str);
-    }
-  };
-
-  var addListener=function(listener) {
-    logListener=listener;
-    // let's call the new listener with all the old log lines
-    for (var i=0; i<logLines.length; i++) {
-      logListener(logLines[i]);
-    }
-  };
-
-  return {output: output, addListener: addListener};
-})();
 
 
 
 function onAcceptCallback(tcpConnection, socketInfo) {
-  var info="["+socketInfo.peerAddress+":"+socketInfo.peerPort+"] Connection accepted!";
-  log.output(info);
-  console.log(socketInfo);
   tcpConnection.addDataReceivedListener(function(data) {
-    var lines = data.split(/[\n\r]+/);
-    for (var i=0; i<lines.length; i++) {
-      var line=lines[i];
-      if (line.length>0) {
-        var info="["+socketInfo.peerAddress+":"+socketInfo.peerPort+"] "+line;
-        log.output(info);
+    var json;
+    try {
+      json = JSON.parse(data || null);
+      log.push("[ Cmd Received ] "+data);
+    } catch(e) {
+      log.push("[ Data Received ] "+data);
+    }
 
-        var cmd=line.split(/\s+/);
-        try {
-          tcpConnection.sendMessage(Commands.run(cmd[0], cmd.slice(1)));
-        } catch (ex) {
-          tcpConnection.sendMessage(ex);
-        }
+    // We have a command, so let's see what are we supposed to do.
+    if(json) {
+      if(json.create) { // Ah, we need need to create a contributors.json from scratch. No worries
+        
+      } else if (json.receive) { // Time to receive a json file!
+
+      }
+
+      try {
+          tcpConnection.sendMessage("Hello from Chrome Ext", function() {
+            console.log("Message was sent", arguments);
+          });
+      } catch (ex) {
+        tcpConnection.sendMessage(ex);
       }
     }
+
   });
 };
 
@@ -84,15 +67,17 @@ function startServer(addr, port) {
 function stopServer() {
   if (tcpServer) {
     tcpServer.disconnect();
-    tcpServer=null;
+    tcpServer = null;
   }
 }
 
 function getServerState() {
   if (tcpServer) {
-    return {isConnected: tcpServer.isConnected(),
+    return {
+      isConnected: tcpServer.isConnected(),
       addr: tcpServer.addr,
-      port: tcpServer.port};
+      port: tcpServer.port
+    };
   } else {
     return {isConnected: false};
   }

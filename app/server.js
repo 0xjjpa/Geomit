@@ -12,31 +12,3 @@ var log = (function(){
   return {output: output};
 })();
 
-chrome.runtime.getBackgroundPage(function(bgPage) {
-
- bgPage.log.addListener(function(str) {
-    log.output(str);
-  });
-
- bgPage.TcpServer.getNetworkAddresses(function(list) {
-    var addr=document.querySelector("#addresses");
-    for (var i=0; i<list.length; i++) {
-      if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(list[i].address)) {
-        var option = document.createElement('option');
-        option.text = list[i].name+" ("+list[i].address+")";
-        option.value = list[i].address;
-        addr.appendChild(option);
-      }
-    };
-  });
-
-  // Stop the server = bgPage.stopServer();
-
-  var currentState=bgPage.getServerState();
-  if (currentState.isConnected) {
-    setConnectedState(currentState.addr, currentState.port);
-  }
-
-  bgPage.startServer("127.0.0.1", 8888);
-
-});

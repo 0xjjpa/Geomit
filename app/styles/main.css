@@ -9,6 +9,19 @@ html {
   font-family: 'Armata', sans-serif;
 }
 
+.status {
+  width: 10px;
+  border-radius: 50%;
+  height: 10px;
+  background: black;
+  display: inline-block;
+  margin: 0 10px;
+  -webkit-transition: background-color 0.5s ease;
+}
+
+span {
+  display: block;
+}
 
 /* ====== Media Object ====== */
 .media {margin:10px;}

@@ -1,29 +1,29 @@
 <!doctype html>
-<html>
+<html ng-app="Geomit" ng-csp>
 <head>
   <meta charset="utf-8">
   <title>Geomit</title>
   <!-- build:css styles/app.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
+  <script src="bower_components/angular/angular.min.js"></script>
 </head>
-<body>
+<body ng-controller="MainController">
   <section id="server">
-    
     <div class="media attribution">
-
       <a href="#" class="img">
-        <img src="icon-128.png" alt="me" />
+        <img src="icon-128.png" alt="Geomit" />
       </a>
       <div class="bd">
-        <h1>Geomit <small>Listening to address 127.0.0.1 and port 8888</small></h1>
-        <div id="serverlog"></div>
+        <h1>Geomit <small><div class="status" ng-style="{background: status.code}"></div>{{status.message}}</small></h1>
+        <div id="serverlog">
+          <span ng-repeat="log in logs">{{log}}</span>
+        </div>
       </div>
     </div>
 
     </section>
-    <script src="server.js"></script>
+    <script src="app.js"></script>
     <script src="location.js"></script>
-
   </body>
   </html>
