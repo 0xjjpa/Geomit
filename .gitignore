@@ -1,2 +1,4 @@
 .DS_Store
 app/bower_components
+app.pem
+app.crx
