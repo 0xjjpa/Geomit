@@ -15,6 +15,7 @@
   },
   "permissions": [
     {"socket":["tcp-listen"]},
-    "geolocation"
+    "geolocation",
+    "clipboardWrite"
   ]
 }

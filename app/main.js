@@ -1,6 +1,7 @@
 
 var tcpServer;
 var commandWindow;
+var hookWindow;
 var log;
 
 var receiveFlag;
@@ -23,6 +24,11 @@ chrome.app.runtime.onLaunched.addListener(function() {
       {bounds: {width: 750, height: 180, left: 0}},
       function(w) {
         commandWindow = w;
+      });
+    chrome.app.window.create('hook.html',
+      {bounds: {width: 400, height: 350, left: 770}},
+      function(w) {
+        hookWindow = w;
       });
   }
 });
@@ -94,7 +100,7 @@ function onAcceptCallback(tcpConnection, socketInfo) {
           tcpConnection.sendMessage(JSON.stringify(geojson), function() {
             log.push("Successfully created contributors.geojson");
           });
-          
+
         } else if (json.receive) { // Time to receive a json file!
           log.push("Contributors.geojson found!");
           receiveFlag = true;

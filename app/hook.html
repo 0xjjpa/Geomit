@@ -1,0 +1,21 @@
+<!doctype html>
+<html ng-app="Geomit" ng-csp>
+<head>
+  <meta charset="utf-8">
+  <title>Geomit</title>
+  <!-- build:css styles/app.css -->
+  <link rel="stylesheet" href="styles/theme.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <script src="bower_components/jquery/jquery.min.js"></script>
+  <script src="lib/rainbow.js"></script>
+</head>
+<body style="text-align:center;">
+  <h1> Pre-commit Hook </h1>
+  <p> For Geomit to work, you need to add the Pre-commit hook to the repository you want to add your location </p>
+  <p> Click on the button to copy it in your Clipboard, then open your .git/hooks folder and replace the file named <strong>pre-commit.sample</strong> for <strong>pre-commit</strong> with the copied content. You can close this window afterwards</p>
+  <button id="copy" class="button green">Copy Pre-commit Hook</button>
+  <textarea id="sandbox"></textarea>
+  <script src="copy.js"></script>
+</body>
+</html>
