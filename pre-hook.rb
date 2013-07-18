@@ -1,11 +1,55 @@
 #!/usr/bin/env ruby
 require 'socket'
 
+# Configurable
 host = 'localhost'
 port = 8888
 
-FNAME = 'contributors.geojson'
-client = TCPSocket.new host, port
+# Constants
+FNAME = '/contributors.geojson'
+SIZE = 1024 * 1024 * 10
+
+# Init...
+puts "Connecting to Geomit..."
+s = TCPSocket.new host, port
+sleep 1 
+
+getRepoNameCommand = "basename `git rev-parse --show-toplevel`"
+getUsernameCommand = "git ls-remote --get-url"
+
+# Communication Test
+repourl = `#{getUsernameCommand}`
+username = /git@github.com:(\w*)\/.*/.match(repourl)[1]
+reponame = `#{getRepoNameCommand}`
+
+s.send "Greetings from "+username+", repo "+reponame, 0
+
+# Retrieving 
+puts "Retrieving contributors.geojson"
+if File.file?(Dir.pwd + FNAME)
+  puts "Found. Sending to Geomit"
+  s.send '{"receive": "true", "username": "'+username+'"}', 0
+  sleep 1
+  File.open(Dir.pwd + FNAME, 'rb') do |file|
+    while chunk = file.read(SIZE)
+      s.write(chunk)
+    end
+  end
+else
+  puts "Not found. Creating contributos.geojson"
+  s.send '{"create": "true"}', 0
+end
+
+puts s.recv(SIZE)
+
+
+=begin
+File.open(Dir.pwd + FNAME, 'rb') do |file|
+  while chunk = file.read(SIZE)
+    s.write(chunk)
+  end
+end
+=end
 
 =begin
 ### Findings about pre-hooks

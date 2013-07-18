@@ -3,6 +3,9 @@ var tcpServer;
 var commandWindow;
 var log;
 
+var receiveFlag;
+var coords;
+
 /**
  * Listens for the app launching then creates the window
  *
@@ -23,35 +26,48 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 
 
-
-
 function onAcceptCallback(tcpConnection, socketInfo) {
   tcpConnection.addDataReceivedListener(function(data) {
-    var json;
-    try {
-      json = JSON.parse(data || null);
-      log.push("[ Cmd Received ] "+data);
-    } catch(e) {
-      log.push("[ Data Received ] "+data);
-    }
+    var json, geojson;
 
-    // We have a command, so let's see what are we supposed to do.
-    if(json) {
-      if(json.create) { // Ah, we need need to create a contributors.json from scratch. No worries
-        
-      } else if (json.receive) { // Time to receive a json file!
-
+    if(receiveFlag) { //This data is a json for sure!
+      receiveFlag = false;
+      try { // ... which doesn't mean we don't have to check!
+        geojson = JSON.parse(data || null);
+        log.push("Parsing contributors.geojson...");
+        console.log("Geojson", geojson)
+        coords = getCoords();
+        console.log("My coords", coords);
+      } catch(e) {
+        log.push("Failed to parse contributors.geojson! Aborting.");
       }
-
+    } else {
       try {
-          tcpConnection.sendMessage("Hello from Chrome Ext", function() {
-            console.log("Message was sent", arguments);
-          });
-      } catch (ex) {
-        tcpConnection.sendMessage(ex);
+        json = JSON.parse(data || null);
+      } catch(e) {
+        log.push(data);
+      }
+
+      // We have a command, so let's see what are we supposed to do.
+      if(json) {
+        if(json.create) { // Ah, we need need to create a contributors.json from scratch. No worries
+          
+        } else if (json.receive) { // Time to receive a json file!
+          console.log("Username", json)
+          log.push("Contributors.geojson found!");
+          receiveFlag = true;
+        }
+
+        try {
+            tcpConnection.sendMessage("Hello from Chrome Ext", function() {
+              console.log("Message was sent", arguments);
+            });
+        } catch (ex) {
+          tcpConnection.sendMessage(ex);
+        }
       }
     }
-
+  
   });
 };
 
