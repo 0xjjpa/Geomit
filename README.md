@@ -39,6 +39,8 @@ Anyone (or anything) listening to Geomit's TCP port can retrieve the communicati
 
 ## Limitations
 
+Currently Geomit relies heavily in your OSX and Ruby to get your github username, your contributors.geojson file (if any) and other data. For the moment, it only works with a github domain (it's not too hard to update the regex that parses this, but wasn't a priority, as the maps are only parsed by Github)
+
 Geomit requires the usage of Ruby for connecting to TCP as part of a Pre-commit hook. Future releases might include other languages version.
 
 Since it's a Chrome Extension, it also requires Google Chrome. However, being a [packaged app](http://developer.chrome.com/apps/about_apps.html), its limitations are not as bad as the ones from a Chrome Extension such as needing Google Chrome open. As long as Geomit is open, it can perform all the required actions to retrieve your location.

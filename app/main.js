@@ -4,7 +4,10 @@ var commandWindow;
 var log;
 
 var receiveFlag;
+
 var coords;
+var username;
+var sha;
 
 /**
  * Listens for the app launching then creates the window
@@ -24,46 +27,77 @@ chrome.app.runtime.onLaunched.addListener(function() {
   }
 });
 
-
+var parseFeature =  function(coords) {
+  return {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              coords.longitude,
+              coords.latitude
+            ]
+          },
+          "properties": {
+            "marker-symbol": "marker",
+            "name": username,
+            "previous-sha": sha
+          }
+        }
+}
 
 function onAcceptCallback(tcpConnection, socketInfo) {
   tcpConnection.addDataReceivedListener(function(data) {
-    var json, geojson;
+    var json, geojson, feature;
 
     if(receiveFlag) { //This data is a json for sure!
       receiveFlag = false;
       try { // ... which doesn't mean we don't have to check!
         geojson = JSON.parse(data || null);
         log.push("Parsing contributors.geojson...");
-        console.log("Geojson", geojson)
+
         coords = getCoords();
-        console.log("My coords", coords);
+        feature = parseFeature(coords);
+        
+        geojson.features.push(feature);
+
+        log.push("Returning parsed contributors.geojson...");
+        tcpConnection.sendMessage(JSON.stringify(geojson), function() {
+          log.push("Successfully updated contributors.geojson");
+        });
+        
       } catch(e) {
         log.push("Failed to parse contributors.geojson! Aborting.");
-      }
+      }      
     } else {
       try {
         json = JSON.parse(data || null);
       } catch(e) {
-        log.push(data);
+        log.push(data); // Anything no-json goes to the console
       }
 
       // We have a command, so let's see what are we supposed to do.
       if(json) {
+        username = json.username;
+        sha = json.sha;
         if(json.create) { // Ah, we need need to create a contributors.json from scratch. No worries
+          log.push("No contributors.geojson. Creating one...");
+
+          geojson = {"type":"FeatureCollection","features":[]}
+          log.push("Creating contributors.geojson...");
+
+          coords = getCoords();
+          feature = parseFeature(coords);
+          
+          geojson.features.push(feature);
+
+          log.push("Returning new contributors.geojson...");
+          tcpConnection.sendMessage(JSON.stringify(geojson), function() {
+            log.push("Successfully created contributors.geojson");
+          });
           
         } else if (json.receive) { // Time to receive a json file!
-          console.log("Username", json)
           log.push("Contributors.geojson found!");
           receiveFlag = true;
-        }
-
-        try {
-            tcpConnection.sendMessage("Hello from Chrome Ext", function() {
-              console.log("Message was sent", arguments);
-            });
-        } catch (ex) {
-          tcpConnection.sendMessage(ex);
         }
       }
     }
