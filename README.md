@@ -125,5 +125,11 @@ Since it's a Chrome Extension, it also requires Google Chrome. However, being a 
 
 ## Roadamp
 
+### Version 0.1.3
+
+[01.08.2013] Fixed some errors on launch trying to look for an old dependency
+
+### Next features
+
 * Adding multiple languages support (python, nodejs, shell)
 * Adding more information to the Geojson maps.
